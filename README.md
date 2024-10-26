@@ -1,6 +1,4 @@
-[![Slack Status](http://slack.counterparty.io/badge.svg)](http://slack.counterparty.io)
-
-**All-in-one Counterparty Federated Node Build System (`federatednode`)**
+**All-in-one Counterparty Classic Federated Node Build System (`fednode`)**
 
 Allows one to easily build a counterparty-server, `counterblock` and/or Counterwallet system, with all required components. Uses Docker and Docker compose.
 
