@@ -2,9 +2,8 @@ version: '2'
 
 # Data volumes defined in these services (which must be defined in child templates):
 # bitcoin-data
-# counterparty-data
-# counterblock-data
-# armory-data
+# counterparty-classic-counterparty-data
+# counterparty-classic-counterblock-data
 # mongodb-data
 
 services:
@@ -41,14 +40,14 @@ services:
     environment:
       - PARAMS=-conf=/root/.bitcoin-config/bitcoin.testnet.conf
 
-  addrindexrs-base:
+  counterparty-classic-addrindexrs-base:
     build:
-      context: ./src/addrindexrs
+      context: ./src/counterparty-classic-addrindexrs
       dockerfile: ./Dockerfile
     command: cargo run --release -- -vvvv
     volumes:
-      - ./config/addrindexrs:/root/.config/addrindexrs
-      - addrindexrs-data:/home/user/db/
+      - ./config/counterparty-classic-addrindexrs:/root/.config/addrindexrs
+      - counterparty-classic-addrindexrs-data:/home/user/db/
     logging:
       driver: "json-file"
       options:
@@ -60,20 +59,20 @@ services:
       - "ADDRINDEXRS_COOKIE=rpc:rpc"
     restart: "unless-stopped"  
 
-  addrindexrs-base-mainnet:
+  counterparty-classic-addrindexrs-base-mainnet:
     hostname: ${HOSTNAME_BASE}-idxd
     extends:
-      service: addrindexrs-base
+      service: counterparty-classic-addrindexrs-base
     ports:
       - "8432:8432"
     environment:
       - "ADDRINDEXRS_INDEXER_RPC_ADDR=0.0.0.0:8432"
       - "ADDRINDEXRS_DAEMON_RPC_ADDR=bitcoin:8332"
 
-  addrindexrs-base-testnet:
+  counterparty-classic-addrindexrs-base-testnet:
     hostname: ${HOSTNAME_BASE}-idxd-t
     extends:
-      service: addrindexrs-base
+      service: counterparty-classic-addrindexrs-base
     ports:
       - "18432:18432"
     environment:
@@ -81,12 +80,12 @@ services:
       - ADDRINDEXRS_NETWORK=testnet
       - "ADDRINDEXRS_DAEMON_RPC_ADDR=bitcoin-testnet:18332"
 
-  counterparty-base:
+  counterparty-classic-base:
     build:
-      context: ./src/counterparty-lib
+      context: ./src/counterparty-classic-lib
     volumes:
-      - ./config/counterparty:/root/.config/counterparty
-      - counterparty-data:/root/.local/share/counterparty
+      - ./config/counterparty-classic:/root/.config/counterparty
+      - counterparty-classic-data:/root/.local/share/counterparty
     logging:
       driver: "json-file"
       options:
@@ -94,10 +93,10 @@ services:
         max-file: "50"
     restart: "unless-stopped"    
 
-  counterparty-base-mainnet:
+  counterparty-classic-base-mainnet:
     hostname: ${HOSTNAME_BASE}-cp
     extends:
-      service: counterparty-base
+      service: counterparty-classic-base
     ports:
       - "4000:4000"
     environment:
@@ -105,10 +104,10 @@ services:
       - BTC_NETWORK=mainnet
       - NO_BOOTSTRAP=${NO_BOOTSTRAP}
       
-  counterparty-base-testnet:
+  counterparty-classic-base-testnet:
     hostname: ${HOSTNAME_BASE}-cp-t
     extends:
-      service: counterparty-base
+      service: counterparty-classic-base
     ports:
       - "14000:14000"
     environment:
@@ -116,12 +115,12 @@ services:
       - BTC_NETWORK=testnet
       - NO_BOOTSTRAP=${NO_BOOTSTRAP}
       
-  counterblock-base:
+  counterparty-classic-counterblock-base:
     build:
-      context: ./src/counterblock
+      context: ./src/counterparty-classic-counterblock
     volumes:
-      - ./config/counterblock:/root/.config/counterblock
-      - counterblock-data:/root/.local/share/counterblock
+      - ./config/counterparty-classic-counterblock:/root/.config/counterblock
+      - counterparty-classic-counterblock-data:/root/.local/share/counterblock
     logging:
       driver: "json-file"
       options:
@@ -129,19 +128,19 @@ services:
         max-file: "50"
     restart: "unless-stopped"    
 
-  counterblock-base-mainnet:
+  counterparty-classic-counterblock-base-mainnet:
     hostname: ${HOSTNAME_BASE}-cb
     extends:
-      service: counterblock-base
+      service: counterparty-classic-counterblock-base
     ports:
       - "4100:4100"
     environment:
       - PARAMS=--config-file=/root/.config/counterblock/server.conf
 
-  counterblock-base-testnet:
+  counterparty-classic-counterblock-base-testnet:
     hostname: ${HOSTNAME_BASE}-cb-t
     extends:
-      service: counterblock-base
+      service: counterparty-classic-counterblock-base
     ports:
       - "14100:14100"
       - "14101:14101"
@@ -149,42 +148,13 @@ services:
     environment:
       - PARAMS=--config-file=/root/.config/counterblock/server.testnet.conf
 
-  armory-utxsvr-base:
-    image: counterparty/armory-utxsvr:${FEDNODE_RELEASE_TAG}
-    volumes:
-      - ./src/armory-utxsvr:/armory-utxsvr
-      - armory-data:/root/.armory
-      - bitcoin-data:/root/.bitcoin/
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "30m"
-        max-file: "30"
-
-  armory-utxsvr-base-mainnet:
-    hostname: ${HOSTNAME_BASE}-amry
-    extends:
-      service: armory-utxsvr-base
-    environment:
-      - BITCOIND_URL=http://rpc:rpc@bitcoin:8332
-      - RPC_HOST=0.0.0.0
-
-  armory-utxsvr-base-testnet:
-    hostname: ${HOSTNAME_BASE}-amry-t
-    extends:
-      service: armory-utxsvr-base
-    environment:
-      - BITCOIND_URL=http://rpc:rpc@bitcoin-testnet:18332
-      - RPC_HOST=0.0.0.0
-      - PARAMS=--testnet
-
-  counterwallet-base:
+  counterparty-classic-counterwallet-base:
     hostname: ${HOSTNAME_BASE}-cw
     build:
-      context: ./src/counterwallet
+      context: ./src/counterparty-classic-counterwallet
     volumes:
-      - ./config/counterwallet/ssl:/ssl_config
-      - counterblock-data:/counterblock_data
+      - ./config/counterparty-classic-counterwallet/ssl:/ssl_config
+      - counterparty-classic-counterblock-data:/counterblock_data
     logging:
       driver: "json-file"
       options:
@@ -219,12 +189,12 @@ services:
         max-size: "30m"
         max-file: "30"
 
-  xcp-proxy-base:
+  counterparty-classic-xcp-proxy-base:
     build:
-      context: ./src/xcp-proxy
+      context: ./src/counterparty-classic-xcp-proxy
       dockerfile: ./Dockerfile
     volumes:
-      - ./config/xcp-proxy:/root/.config/xcp-proxy
+      - ./config/counterparty-classic-xcp-proxy:/root/.config/xcp-proxy
     logging:
       driver: "json-file"
       options:
@@ -233,10 +203,10 @@ services:
     environment:
       - INTERVAL_CHECK_COUNTERPARTY_PARSED=1000
 
-  xcp-proxy-base-mainnet:
+  counterparty-classic-xcp-proxy-base-mainnet:
     hostname: ${HOSTNAME_BASE}-prx
     extends:
-      service: xcp-proxy-base
+      service: counterparty-classic-xcp-proxy-base
     ports:
       - "8097:8097"
       - "8098:8098"
@@ -248,10 +218,10 @@ services:
       - REDIS_URL=redis://redis:6379/8
       - SECRETS_PATH=/root/.config/xcp-proxy/secrets
 
-  xcp-proxy-base-testnet:
+  counterparty-classic-xcp-proxy-base-testnet:
     hostname: ${HOSTNAME_BASE}-prx-t
     extends:
-      service: xcp-proxy-base
+      service: counterparty-classic-xcp-proxy-base
     ports:
       - "18097:18097"
       - "18098:18098"
@@ -263,31 +233,31 @@ services:
       - REDIS_URL=redis://redis:6379/9
       - SECRETS_PATH=/root/.config/xcp-proxy/secrets-testnet
 
-  http-addrindexrs-base:
+  counterparty-classic-http-addrindexrs-base:
     build:
-      context: ./src/http-addrindexrs
+      context: ./src/counterparty-classic-http-addrindexrs
     volumes:
-      - ./config/http-addrindexrs:/root/.config/http-addrindexrs
+      - ./config/counterparty-classic-http-addrindexrs:/root/.config/http-addrindexrs
     logging:
       driver: "json-file"
       options:
         max-size: "30m"
         max-file: "50"
 
-  http-addrindexrs-base-mainnet:
+  counterparty-classic-http-addrindexrs-base-mainnet:
     hostname: ${HOSTNAME_BASE}-ha
     extends:
-      service: http-addrindexrs-base
+      service: counterparty-classic-http-addrindexrs-base
     ports:
       - "9000:8335"
       - "9001:9001"
     environment:
       - DOTENV_CONFIG_PATH=/root/.config/http-addrindexrs/server.conf
       
-  http-addrindexrs-base-testnet:
+  counterparty-classic-http-addrindexrs-base-testnet:
     hostname: ${HOSTNAME_BASE}-ha-t
     extends:
-      service: http-addrindexrs-base
+      service: counterparty-classic-http-addrindexrs-base
     ports:
       - "19000:18335"
       - "19001:19001"

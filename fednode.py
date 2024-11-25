@@ -26,11 +26,11 @@ SCRIPTDIR = os.path.dirname(os.path.realpath(__file__))
 FEDNODE_CONFIG_FILE = ".fednode.config"
 FEDNODE_CONFIG_PATH = os.path.join(SCRIPTDIR, FEDNODE_CONFIG_FILE)
 
-REPO_BASE_HTTPS = "https://github.com/CounterpartyXCP/{}.git"
-REPO_BASE_SSH = "git@github.com:CounterpartyXCP/{}.git"
-REPOS_BASE = ['counterparty-lib', 'counterparty-cli', 'addrindexrs', 'xcp-proxy', 'http-addrindexrs']
-REPOS_COUNTERBLOCK = REPOS_BASE + ['counterblock']
-REPOS_FULL = REPOS_COUNTERBLOCK + ['counterwallet', 'armory-utxsvr', 'xcp-proxy']
+REPO_BASE_HTTPS = "https://github.com/Counterparty-Classic/{}.git"
+REPO_BASE_SSH = "git@github.com:Counterparty-Classic/{}.git"
+REPOS_BASE = ['counterparty-classic-lib', 'counterparty-classic-cli', 'counterparty-classic-addrindexrs', 'counterparty-classic-xcp-proxy', 'counterparty-classic-http-addrindexrs']
+REPOS_COUNTERBLOCK = REPOS_BASE + ['counterparty-classic-counterblock']
+REPOS_FULL = REPOS_COUNTERBLOCK + ['counterparty-classic-counterwallet', 'counterparty-classic-xcp-proxy']
 
 HOST_PORTS_USED = {
     'base': [8332, 18332, 8432, 18432, 4000, 14000, 8097, 18097, 8098, 18098, 9000, 9001, 19000, 19001],
@@ -39,43 +39,43 @@ HOST_PORTS_USED = {
     'full': [8332, 18332, 8432, 18432, 4000, 14000, 8097, 18097, 8098, 18098, 4100, 14100, 27017, 80, 443, 9000, 9001, 19000, 19001]
 }
 VOLUMES_USED = {
-    'base': ['bitcoin-data', 'addrindexrs-data', 'counterparty-data'],
-    'base_extbtc': ['addrindexrs-data', 'counterparty-data'],
-    'counterblock': ['bitcoin-data', 'addrindexrs-data', 'counterparty-data', 'counterblock-data', 'mongodb-data'],
-    'full': ['bitcoin-data', 'addrindexrs-data', 'counterparty-data', 'counterblock-data', 'mongodb-data', 'armory-data']
+    'base': ['bitcoin-data', 'counterparty-classic-addrindexrs-data', 'counterparty-classic-data'],
+    'base_extbtc': ['counterparty-classic-addrindexrs-data', 'counterparty-classic-data'],
+    'counterblock': ['bitcoin-data', 'counterparty-classic-addrindexrs-data', 'counterparty-classic-data', 'counterparty-classic-counterblock-data', 'mongodb-data'],
+    'full': ['bitcoin-data', 'counterparty-classic-addrindexrs-data', 'counterparty-classic-data', 'counterparty-classic-counterblock-data', 'mongodb-data']
 }
-UPDATE_CHOICES = ['addrindexrs', 'addrindexrs-testnet',
-                  'counterparty', 'counterparty-testnet', 'counterblock',
-                  'counterblock-testnet', 'counterwallet', 'armory-utxsvr',
-                  'armory-utxsvr-testnet', 'xcp-proxy', 'xcp-proxy-testnet',
-                  'http-addrindexrs', 'http-addrindexrs-testnet']
-REPARSE_CHOICES = ['counterparty', 'counterparty-testnet', 'counterblock', 'counterblock-testnet']
-ROLLBACK_CHOICES = ['counterparty', 'counterparty-testnet']
-VALIDATE_CHOICES = ['counterparty', 'counterparty-testnet']
-VACUUM_CHOICES = ['counterparty', 'counterparty-testnet']
-SHELL_CHOICES = UPDATE_CHOICES + ['mongodb', 'redis', 'bitcoin', 'bitcoin-testnet', 'addrindexrs', 'addrindexrs-testnet']
+UPDATE_CHOICES = ['counterparty-classic-addrindexrs', 'counterparty-classic-addrindexrs-testnet',
+                  'counterparty-classic', 'counterparty-classic-testnet', 'counterparty-classic-counterblock',
+                  'counterparty-classic-counterblock-testnet', 'counterparty-classic-counterwallet',
+                  'counterparty-classic-xcp-proxy', 'counterparty-classic-xcp-proxy-testnet',
+                  'counterparty-classic-http-addrindexrs', 'counterparty-classic-http-addrindexrs-testnet']
+REPARSE_CHOICES = ['counterparty-classic', 'counterparty-classic-testnet', 'counterparty-classic-counterblock', 'counterparty-classic-counterblock-testnet']
+ROLLBACK_CHOICES = ['counterparty-classic', 'counterparty-classic-testnet']
+VALIDATE_CHOICES = ['counterparty-classic', 'counterparty-classic-testnet']
+VACUUM_CHOICES = ['counterparty-classic', 'counterparty-classic-testnet']
+SHELL_CHOICES = UPDATE_CHOICES + ['mongodb', 'redis', 'bitcoin', 'bitcoin-testnet', 'counterparty-classic-addrindexrs', 'counterparty-classic-addrindexrs-testnet']
 
 CONFIGCHECK_FILES_BASE_EXTERNAL_BITCOIN = [
-    ['addrindexrs', 'addrindexrs.env.default', 'addrindexrs.env'],
-    ['addrindexrs', 'addrindexrs.testnet.env.default', 'addrindexrs.testnet.env'],
-    ['counterparty', 'client.conf.default', 'client.conf'],
-    ['counterparty', 'client.testnet.conf.default', 'client.testnet.conf'],
-    ['counterparty', 'server.conf.default', 'server.conf'],
-    ['counterparty', 'server.testnet.conf.default', 'server.testnet.conf'],
+    ['counterparty-classic-addrindexrs', 'addrindexrs.env.default', 'addrindexrs.env'],
+    ['counterparty-classic-addrindexrs', 'addrindexrs.testnet.env.default', 'addrindexrs.testnet.env'],
+    ['counterparty-classic', 'client.conf.default', 'client.conf'],
+    ['counterparty-classic', 'client.testnet.conf.default', 'client.testnet.conf'],
+    ['counterparty-classic', 'server.conf.default', 'server.conf'],
+    ['counterparty-classic', 'server.testnet.conf.default', 'server.testnet.conf'],
 ];
 CONFIGCHECK_FILES_BASE = [
     ['bitcoin', 'bitcoin.conf.default', 'bitcoin.conf'],
     ['bitcoin', 'bitcoin.testnet.conf.default', 'bitcoin.testnet.conf'],
-    ['addrindexrs', 'addrindexrs.env.default', 'addrindexrs.env'],
-    ['addrindexrs', 'addrindexrs.testnet.env.default', 'addrindexrs.testnet.env'],
-    ['counterparty', 'client.conf.default', 'client.conf'],
-    ['counterparty', 'client.testnet.conf.default', 'client.testnet.conf'],
-    ['counterparty', 'server.conf.default', 'server.conf'],
-    ['counterparty', 'server.testnet.conf.default', 'server.testnet.conf'],
+    ['counterparty-classic-addrindexrs', 'addrindexrs.env.default', 'addrindexrs.env'],
+    ['counterparty-classic-addrindexrs', 'addrindexrs.testnet.env.default', 'addrindexrs.testnet.env'],
+    ['counterparty-classic', 'client.conf.default', 'client.conf'],
+    ['counterparty-classic', 'client.testnet.conf.default', 'client.testnet.conf'],
+    ['counterparty-classic', 'server.conf.default', 'server.conf'],
+    ['counterparty-classic', 'server.testnet.conf.default', 'server.testnet.conf'],
 ];
 CONFIGCHECK_FILES_COUNTERBLOCK = CONFIGCHECK_FILES_BASE + [
-    ['counterblock', 'server.conf.default', 'server.conf'],
-    ['counterblock', 'server.testnet.conf.default', 'server.testnet.conf'],
+    ['counterparty-classic-counterblock', 'server.conf.default', 'server.conf'],
+    ['counterparty-classic-counterblock', 'server.testnet.conf.default', 'server.testnet.conf'],
 ]
 CONFIGCHECK_FILES_FULL = CONFIGCHECK_FILES_COUNTERBLOCK;
 CONFIGCHECK_FILES = {
