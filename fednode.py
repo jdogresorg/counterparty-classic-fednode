@@ -91,6 +91,7 @@ SUDO_CMD = None
 # set in main()
 DOCKER_CONFIG_PATH = None
 
+DOCKER_COMPOSE_COMMAND = "docker-compose"
 
 def parse_args():
     parser = argparse.ArgumentParser(prog='fednode', description='fednode utility v{}'.format(VERSION))
@@ -175,7 +176,7 @@ def write_config(config):
 def run_compose_cmd(cmd):
     assert DOCKER_CONFIG_PATH
     assert os.environ['FEDNODE_RELEASE_TAG']
-    return os.system("{} docker compose -f {} -p {} {}".format(SUDO_CMD, DOCKER_CONFIG_PATH, PROJECT_NAME, cmd))
+    return os.system("{} {} -f {} -p {} {}".format(SUDO_CMD, DOCKER_COMPOSE_COMMAND, DOCKER_CONFIG_PATH, PROJECT_NAME, cmd))
 
 
 def is_port_open(port):
@@ -275,6 +276,14 @@ def main():
 
     use_docker_pulls = not args.no_pull
 
+
+    # check docker-compose version
+    try:
+        subprocess.check_output("docker compose version", shell=True, stderr=subprocess.STDOUT) #docker writes to stderr, this will prevent any output from this command
+        DOCKER_COMPOSE_COMMAND = "docker compose"
+    except Exception as e:
+        pass #this means "docker compose" doesn't exist, so the default value for DOCKER_COMPOSE_COMMAND ("docker-compose") will be used
+        
     # run utility commands (docker_clean) if specified
     if args.command == 'docker_clean':
         docker_containers = subprocess.check_output("{} docker ps -a -q".format(SUDO_CMD), shell=True).decode("utf-8").split('\n')
