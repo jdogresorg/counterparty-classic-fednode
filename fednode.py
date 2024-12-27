@@ -45,7 +45,7 @@ VOLUMES_USED = {
     'full': ['bitcoin-data', 'counterparty-classic-addrindexrs-data', 'counterparty-classic-data', 'counterparty-classic-counterblock-data', 'mongodb-data']
 }
 UPDATE_CHOICES = ['counterparty-classic-addrindexrs', 'counterparty-classic-addrindexrs-testnet',
-                  'counterparty-classic', 'counterparty-classic-testnet', 'counterparty-classic-counterblock',
+                  'counterparty-classic-lib', 'counterparty-classic-lib-testnet', 'counterparty-classic-counterblock',
                   'counterparty-classic-counterblock-testnet', 'counterparty-classic-counterwallet',
                   'counterparty-classic-xcp-proxy', 'counterparty-classic-xcp-proxy-testnet',
                   'counterparty-classic-http-addrindexrs', 'counterparty-classic-http-addrindexrs-testnet']
