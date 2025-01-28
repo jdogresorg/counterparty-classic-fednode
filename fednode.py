@@ -280,6 +280,7 @@ def main():
     # check docker-compose version
     try:
         subprocess.check_output("docker compose version", shell=True, stderr=subprocess.STDOUT) #docker writes to stderr, this will prevent any output from this command
+        global DOCKER_COMPOSE_COMMAND
         DOCKER_COMPOSE_COMMAND = "docker compose"
     except Exception as e:
         pass #this means "docker compose" doesn't exist, so the default value for DOCKER_COMPOSE_COMMAND ("docker-compose") will be used
@@ -367,10 +368,10 @@ def main():
                     os.chown(active_config, default_config_stat.st_uid, default_config_stat.st_gid)
 
         
-		# launch
+        # launch
         run_compose_cmd("up -d")
-		
-		# create symlinks to the data volumes (for ease of use)
+        
+        # create symlinks to the data volumes (for ease of use)
         if not IS_WINDOWS:
             data_dir = os.path.join(SCRIPTDIR, "data")
             if not os.path.exists(data_dir):
