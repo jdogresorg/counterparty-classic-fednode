@@ -91,7 +91,7 @@ SUDO_CMD = None
 # set in main()
 DOCKER_CONFIG_PATH = None
 
-DOCKER_COMPOSE_COMMAND = "docker-compose"
+DOCKER_COMPOSE_COMMAND = "docker compose"
 
 def parse_args():
     parser = argparse.ArgumentParser(prog='fednode', description='fednode utility v{}'.format(VERSION))
@@ -276,14 +276,13 @@ def main():
 
     use_docker_pulls = not args.no_pull
 
-
     # check docker-compose version
-    try:
-        subprocess.check_output("docker compose version", shell=True, stderr=subprocess.STDOUT) #docker writes to stderr, this will prevent any output from this command
-        global DOCKER_COMPOSE_COMMAND
-        DOCKER_COMPOSE_COMMAND = "docker compose"
-    except Exception as e:
-        pass #this means "docker compose" doesn't exist, so the default value for DOCKER_COMPOSE_COMMAND ("docker-compose") will be used
+    #try:
+    #    subprocess.check_output("docker compose version", shell=True, stderr=subprocess.STDOUT) #docker writes to stderr, this will prevent any output from this command
+    #    global DOCKER_COMPOSE_COMMAND
+    #    DOCKER_COMPOSE_COMMAND = "docker compose"
+    #except Exception as e:
+    #    pass #this means "docker compose" doesn't exist, so the default value for DOCKER_COMPOSE_COMMAND ("docker-compose") will be used
         
     # run utility commands (docker_clean) if specified
     if args.command == 'docker_clean':
